@@ -35,16 +35,13 @@ public class ReservaDeHotel {
             System.out.print("data de check out (dd/mm/yyyy): ");
             checkOut = sdf.parse(sc.next());
             
-            Date now = new Date();
-            
-            if(checkIn.before(now) || checkOut.before(now)){
-                System.out.println("as datas de atualizacao devem ser posterior a data atual");
-            } else if (!checkOut.after(checkIn)) {
-                System.out.println("erro na reserva: data de check out inferior a data de check in");
+            String erro = reserva.atualizarData(checkIn, checkOut);
+            if(erro != null){
+                System.out.println("erro na reserva : "+erro);
             } else {
-                reserva.atualizarData(checkIn, checkOut);
                 System.out.println("reserva : "+reserva.toString());
-            }         
+            }
+                  
         }
         
         sc.close();
