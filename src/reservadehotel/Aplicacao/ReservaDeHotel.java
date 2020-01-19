@@ -3,6 +3,7 @@ package reservadehotel.Aplicacao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import reservadehotel.Aplicacao.Model.Reserva;
 import reservadehotel.Aplicacao.execao.DomainException;
@@ -40,6 +41,12 @@ public class ReservaDeHotel {
         }
         catch(DomainException e){
             System.out.println("Erro na reserva : "+e.getMessage());
+        }
+        catch(InputMismatchException e){
+            System.out.println("dados de entrada invalidos ");
+        } 
+        catch (RuntimeException e){
+            System.out.println("Erro inesperado ");
         }
         
         sc.close();
