@@ -5,43 +5,41 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import reservadehotel.Aplicacao.Model.Reserva;
-
-
-
+import reservadehotel.Aplicacao.execao.DomainException;
 
 public class ReservaDeHotel {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args){
         
         Scanner sc = new Scanner(System.in);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         
-        System.out.print("numero do quarto: ");
-        int num = sc.nextInt();
-        System.out.print("digite a data de check in : ");
-        Date checkIn = sdf.parse(sc.next());
-        System.out.print("digite a data de check out : ");
-        Date checkOut = sdf.parse(sc.next());
-        
-        if(!checkOut.after(checkIn)){
-            System.out.println("erro na reserva: data de check out inferior a data de check in");
-        } else {
+        try{
+            System.out.print("numero do quarto: ");
+            int num = sc.nextInt();
+            System.out.print("digite a data de check in : ");
+            Date checkIn = sdf.parse(sc.next());
+            System.out.print("digite a data de check out : ");
+            Date checkOut = sdf.parse(sc.next());
+
+
             Reserva reserva = new Reserva(num, checkIn, checkOut);
             System.out.println("reserva : "+reserva.toString());
-            
+
             System.out.println("\nentre com as datas da atualizacao da reserva");
             System.out.print("data de check in (dd/mm/yyyy): ");
             checkIn = sdf.parse(sc.next());
             System.out.print("data de check out (dd/mm/yyyy): ");
             checkOut = sdf.parse(sc.next());
-            
-            String erro = reserva.atualizarData(checkIn, checkOut);
-            if(erro != null){
-                System.out.println("erro na reserva : "+erro);
-            } else {
-                System.out.println("reserva : "+reserva.toString());
-            }
-                  
+
+            reserva.atualizarData(checkIn, checkOut);
+            System.out.println("reserva : "+reserva.toString());
+        } 
+        catch(ParseException e){
+            System.out.println("formato de dada invalido");
+        }
+        catch(DomainException e){
+            System.out.println("Erro na reserva : "+e.getMessage());
         }
         
         sc.close();

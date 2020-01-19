@@ -8,6 +8,7 @@ package reservadehotel.Aplicacao.Model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import reservadehotel.Aplicacao.execao.DomainException;
 
 /**
  *
@@ -20,7 +21,10 @@ public class Reserva {
     
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    public Reserva(Integer numeroDoQuarto, Date checkIn, Date CheckOut) {
+    public Reserva(Integer numeroDoQuarto, Date checkIn, Date checkOut) throws DomainException {
+         if (!checkOut.after(checkIn)) {
+            throw new DomainException ("erro na reserva: data de check out inferior a data de check in");
+        } 
         this.numeroDoQuarto = numeroDoQuarto;
         this.checkIn = checkIn;
         this.CheckOut = CheckOut;
@@ -48,19 +52,19 @@ public class Reserva {
         //essa classe "TimeUnit" converte tempos //
     }
     
-    public String atualizarData (Date checkIn, Date checkOut){
+    public void atualizarData (Date checkIn, Date checkOut) throws DomainException{
         Date now = new Date();
             
         if(checkIn.before(now) || checkOut.before(now)){
-            return  "as datas de atualizacao devem ser posterior a data atual";
+            throw new DomainException("as datas de atualizacao devem ser posterior a data atual");
         }
         if (!checkOut.after(checkIn)) {
-            return "erro na reserva: data de check out inferior a data de check in";
+            throw new DomainException ("erro na reserva: data de check out inferior a data de check in");
         } 
         this.checkIn = checkIn;
         this.CheckOut = checkOut;
-        
-        return null;
+
+
     }
 
     @Override
